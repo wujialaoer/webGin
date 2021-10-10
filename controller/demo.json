@@ -1,0 +1,93 @@
+{
+  "code": 200,
+  "data": {
+    "answer": "缬沙坦氨氯地平片(Ⅰ)<br>80/5mg x 7片<br>参考均价：¥59.90<br>有效日期至：2022-12-31<br>请问您想咨询药物相关哪项？回复Bot对应数字即可哦<br>1.适应症<br>2.用法<br>3.不良反应<br>4.完整说明书",
+    "faqId": "4665043405ec4bbcb09ff89f7bab5519",
+    "faqPackageId": "5bc9d57808e544c8aa74f852d4ea2fb8",
+    "nodeList": [
+      {
+        "data": {
+          "nextNode": [
+            {
+              "conditions": "",
+              "nodeContent": "  \n              结束\n              \n              ",
+              "nodeId": "7a8b1f20d30011ea87de4f72b22c127f",
+              "sourceAnchor": "Left",
+              "type": "Exit"
+            },
+            {
+              "conditions": "",
+              "nodeContent": "  \n              结束\n              \n              ",
+              "nodeId": "7a8b1f20d30011ea87de4f72b22c127f",
+              "sourceAnchor": "Left",
+              "type": "Exit"
+            },
+            {
+              "conditions": "3|不良反应",
+              "nodeContent": "【不良反应】<br>已经在超过2600名高血压患者中进行了缬沙坦氨氯地平片的安全性评价；不良反应通常轻微且短暂，只有极少数情况下需要停药。<br>不良反应的总体发生率为非剂量依赖性，且与性别、年龄和种族均无关。",
+              "nodeId": "17609dd0d30011ea87de4f72b22c127f",
+              "sourceAnchor": "Right",
+              "type": "Answer"
+            },
+            {
+              "conditions": "4|说明书",
+              "nodeContent": "说明书<br><img src=\"http://bys-kbs.southeastasia.cloudapp.azure.com:8081/upload/imgs/20200731153529d4280ca0-c60f-42ab-a59f-46460d0a7f8a.jpg\" alt=\"\" width=\"954\" height=\"1680\">",
+              "nodeId": "2be32a70d30011ea87de4f72b22c127f",
+              "sourceAnchor": "Right",
+              "type": "Answer"
+            },
+            {
+              "conditions": "",
+              "nodeContent": "缬沙坦氨氯地平片(Ⅰ)<br>80/5mg x 7片<br>参考均价：¥59.90<br>有效日期至：2022-12-31<br>请问您想咨询药物相关哪项？回复Bot对应数字即可哦<br>1.适应症<br>2.用法<br>3.不良反应<br>4.完整说明书",
+              "nodeId": "32bf4230d2ff11ea87de4f72b22c127f",
+              "sourceAnchor": "Right",
+              "type": "Option"
+            },
+            {
+              "conditions": "",
+              "nodeContent": "缬沙坦氨氯地平片(Ⅰ)",
+              "nodeId": "312911d0d2ff11ea87de4f72b22c127f",
+              "sourceAnchor": "Right",
+              "type": "Problem"
+            },
+            {
+              "conditions": "2|用法",
+              "nodeContent": "【用法】<br>用单药治疗不能充分控制血压的患者，可以改用本品；通常开始用药或改变剂量后2周内达到绝大部分的治疗效应。<br>为方便给药，接受氨氯地平和缬沙坦单药联合治疗的患者可以改用相同剂量的本品进行治疗",
+              "nodeId": "0a99be10d30011ea87de4f72b22c127f",
+              "sourceAnchor": "Right",
+              "type": "Answer"
+            },
+            {
+              "conditions": "",
+              "nodeContent": "  \n              结束\n              \n              ",
+              "nodeId": "7a8b1f20d30011ea87de4f72b22c127f",
+              "sourceAnchor": "Left",
+              "type": "Exit"
+            },
+            {
+              "conditions": "1|适应症",
+              "nodeContent": "【适应症】治疗原发性高血压。<br>本品用于单药治疗不能充分控制血压的患者。",
+              "nodeId": "eeadc340d2ff11ea87de4f72b22c127f",
+              "sourceAnchor": "Right",
+              "type": "Answer"
+            },
+            {
+              "conditions": "",
+              "nodeContent": "  \n              结束\n              \n              ",
+              "nodeId": "7a8b1f20d30011ea87de4f72b22c127f",
+              "sourceAnchor": "Left",
+              "type": "Exit"
+            }
+          ]
+        },
+        "left": 59,
+        "nodeContent": "  \n              开始\n              \n              ",
+        "nodeId": "3066d340d2ff11ea87de4f72b22c127f",
+        "top": 119,
+        "type": "Root"
+      }
+    ],
+    "problem": "缬沙坦氨氯地平片(Ⅰ)"
+  },
+  "message": "success"
+}
