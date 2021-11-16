@@ -6,7 +6,7 @@ const (
 	DB_HOST  = "127.0.0.1"
 	DB_PORT  = "3306"
 	USER     = "root"
-	PASSWORD = "Admin123"
+	PASSWORD = "admin123"
 	CHARSET  = "utf8mb4"
-	DBNAME   = "kbs"
+	DBNAME   = "hr"
 )
