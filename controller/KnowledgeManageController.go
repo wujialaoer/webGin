@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -61,73 +60,65 @@ func (k *KnowledgeManageController) GetMultipleRounds(ctx *gin.Context) {
 	data["faqPackageId"] = faq.FaqPackageId
 	data["problem"] = faq.Problem
 	data["answer"] = faq.Answer
-	data["nodeList"] = MultipleRoundsNodes(process.StartNode, process.Id, make([]map[string]interface{}, 0))
+	var nodeList []map[string]interface{}
+	data["nodeList"] = MultipleRoundsNodes(nodeList, process)
 	utils.Response(ctx, 200, "success", data)
 }
 
-func MultipleRoundsNodes(startNode string, processId string, data []map[string]interface{}) []map[string]interface{} {
-	readyNo := make([]string, 0)
-all:
-	node := kn.Node{NodeId: startNode}
-	has := utils.DbEngine.Find(&node)
-	if has.RowsAffected == 0 {
-		return data
-	}
-	nodeData := map[string]interface{}{
-		"nodeId":      node.NodeId,
-		"type":        node.NodeType,
-		"nodeContent": node.Description,
-		"top":         node.Top,
-		"left":        node.Left,
-	}
-	data = append(data, nodeData)
-	readyNo = append(readyNo, node.NodeId)
+func MultipleRoundsNodes(data []map[string]interface{}, process kn.Process) []map[string]interface{} {
 
-	var allTrs []kn.Transition
-	utils.DbEngine.Where(kn.Transition{ProcessId: processId}).Find(&allTrs)
-	if allTrs == nil {
-		return data
-	}
-
-	nextNodeIds := make([]string, 0)
-
+	allTrs := make([]kn.Transition, 0)
+	//utils.DbEngine.Distinct("from_node_id").Find(&allTrs)
+	utils.DbEngine.Where(kn.Transition{ProcessId: process.Id}).Distinct("from_node_id").Find(&allTrs)
 	for _, tr := range allTrs {
-		nextNode := make([]map[string]interface{}, 0)
-		if len(nextNodeIds) > 0 && utils.IsHave(nextNodeIds, tr.ToNodeId) {
-			continue
+		trs := make([]kn.Transition, 0)
+		utils.DbEngine.Where(kn.Transition{FromNodeId: tr.FromNodeId, ProcessId: process.Id}).Distinct("id", "to_node_id").Find(&trs)
+		//	根据拿到的node_id查node信息
+		node := kn.Node{NodeId: tr.FromNodeId}
+		utils.DbEngine.Find(&node)
+		nodeInfo := map[string]interface{}{
+			"nodeId":      node.NodeId,
+			"type":        node.NodeType,
+			"nodeContent": node.Description,
+			"top":         node.Top,
+			"left":        node.Left,
 		}
-		next := kn.Node{NodeId: tr.ToNodeId}
-		has = utils.DbEngine.Find(&next)
-		if has.RowsAffected == 0 {
-			return data
-		}
-		fmt.Println(next)
-		nextData := map[string]interface{}{
-			"nodeId":       next.NodeId,
-			"type":         next.NodeType,
-			"nodeContent":  next.Description,
-			"conditions":   tr.Conditions,
-			"sourceAnchor": tr.SourceAnchor,
-		}
-		nextNode = append(nextNode, nextData)
-		readyNo = append(readyNo, next.NodeId)
-		nodeData["data"] = map[string]interface{}{
-			"nextNode": nextNode,
-		}
-		//if next.NodeType == "Exit" && utils.IsHave(readyNo, next.NodeId) {
-		//	return data
-		//}
-		if len(readyNo) > 0 && utils.IsHave(readyNo, tr.ToNodeId) {
-			continue
-		}
-		utils.DbEngine.Not(readyNo).Where(kn.Transition{ProcessId: processId}).Find(&allTrs)
-		if allTrs == nil {
-			return data
-		}
-		goto all
+		nextNodes := make([]map[string]string, 0)
+		for _, t := range trs {
+			n := kn.Node{NodeId: t.ToNodeId}
+			utils.DbEngine.Find(&n)
+			ts := kn.Transition{
+				Id: t.Id,
+			}
+			utils.DbEngine.Where(kn.Transition{ProcessId: process.Id}).Find(&ts)
 
+			nextNodes = append(nextNodes, map[string]string{
+				"nodeId":       n.NodeId,
+				"type":         n.NodeType,
+				"nodeContent":  n.Description,
+				"conditions":   ts.Conditions,
+				"sourceAnchor": ts.SourceAnchor,
+			})
+		}
+		// 拼接
+		nodeInfo["data"] = map[string]interface{}{
+			"nextNode": nextNodes,
+		}
+		//返回
+		data = append(data, nodeInfo)
 	}
-
+	endNode := kn.Node{}
+	utils.DbEngine.Where(kn.Node{ProcessId: process.Id, NodeType: "结束"}).Find(&endNode)
+	data = append(data, map[string]interface{}{
+		"nodeId":      endNode.NodeId,
+		"type":        endNode.NodeType,
+		"nodeContent": endNode.Description,
+		"top":         endNode.Top,
+		"left":        endNode.Left,
+		"data": map[string]interface{}{
+			"nextNode": []map[string]string{},
+		},
+	})
 	return data
 }
 
@@ -182,7 +173,6 @@ func (k *KnowledgeManageController) AddMultipleRounds(ctx *gin.Context) {
 			ProcessId:   process.Id,
 		}
 		utils.DbEngine.Create(&newNode)
-		fmt.Println(newNode)
 		if len(nodes.Data.NextNode) == 0 {
 			continue
 		}
@@ -241,7 +231,6 @@ func (k *KnowledgeManageController) GetFaqSimple(ctx *gin.Context) {
 func (k *KnowledgeManageController) FaqSimple(ctx *gin.Context) {
 	addSimple := new(FaqSimpleHandle)
 	ctx.BindJSON(addSimple)
-	fmt.Println(addSimple.Problem, addSimple.Answer)
 	faq := kn.Faq{Problem: addSimple.Problem}
 	has := utils.DbEngine.Where(faq).Find(&faq)
 	if has.RowsAffected > 0 {
@@ -335,7 +324,6 @@ func (k *KnowledgeManageController) FaqPkgSelect(ctx *gin.Context) {
 func (k *KnowledgeManageController) DeleteFaqPkg(ctx *gin.Context) {
 
 	id := ctx.Param("id")
-	fmt.Println("DeleteFaqPkg", id)
 	faqPkg := kn.FaqPackage{Id: id}
 	has := utils.DbEngine.Find(&faqPkg)
 	if has.Error != nil {
@@ -352,14 +340,10 @@ func (k *KnowledgeManageController) DeleteFaqPkg(ctx *gin.Context) {
 
 // UpdateFaqPack 更新知识包
 func (k *KnowledgeManageController) UpdateFaqPack(ctx *gin.Context) {
-	id := ctx.Param("id")
-	fmt.Println(id)
-	fmt.Println(ctx.Request.Form)
 	updateFaqPkg := new(FaqPkgHandle)
 	ctx.BindJSON(updateFaqPkg)
 	faqPkg := kn.FaqPackage{}
 	has := utils.DbEngine.Where("faq_package_id = ?", updateFaqPkg.FaqPackageId).Find(&faqPkg)
-	fmt.Println(21221, has.RowsAffected)
 	if has.Error != nil {
 		utils.Response(ctx, 400, "failed", nil)
 		return

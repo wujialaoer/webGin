@@ -1,0 +1,170 @@
+{
+  "code": 200,
+  "data": {
+    "faqId": "46650434-05ec-4bbc-b09f-f89f7bab5519",
+    "faqPackageId": "5bc9d578-08e5-44c8-aa74-f852d4ea2fb8",
+    "problem": "缬沙坦氨氯地平片(Ⅰ)",
+    "answer": "缬沙坦氨氯地平片(Ⅰ)<br>80/5mg x 7片<br>参考均价：¥59.90<br>有效日期至：2022-12-31<br>请问您想咨询药物相关哪项？回复Bot对应数字即可哦<br>1.适应症<br>2.用法<br>3.不良反应<br>4.完整说明书",
+    "nodeList": [
+      {
+        "nodeId": "17609dd0-d300-11ea-87de-4f72b22c127f",
+        "type": "Answer",
+        "nodeContent": "【不良反应】<br>已经在超过2600名高血压患者中进行了缬沙坦氨氯地平片的安全性评价；不良反应通常轻微且短暂，只有极少数情况下需要停药。<br>不良反应的总体发生率为非剂量依赖性，且与性别、年龄和种族均无关。",
+        "top": 596,
+        "left": 360,
+        "data": {
+          "nextNode": [
+            {
+              "nodeId": "7a8b1f20-d300-11ea-87de-4f72b22c127f",
+              "type": "Exit",
+              "nodeContent": "  \n              结束\n              \n              ",
+              "conditions": "",
+              "sourceAnchor": "Left"
+            }
+          ]
+        }
+      },
+      {
+        "nodeId": "2be32a70-d300-11ea-87de-4f72b22c127f",
+        "type": "Answer",
+        "nodeContent": "说明书<br><img src=\"http://bys-kbs.southeastasia.cloudapp.azure.com:8081/upload/imgs/20200731153529d4280ca0-c60f-42ab-a59f-46460d0a7f8a.jpg\" alt=\"\" width=\"954\" height=\"1680\">",
+        "top": 857,
+        "left": 383,
+        "data": {
+          "nextNode": [
+            {
+              "nodeId": "7a8b1f20-d300-11ea-87de-4f72b22c127f",
+              "type": "Exit",
+              "nodeContent": "  \n              结束\n              \n              ",
+              "conditions": "",
+              "sourceAnchor": "Left"
+            }
+          ]
+        }
+      },
+      {
+        "nodeId": "32bf4230-d2ff-11ea-87de-4f72b22c127f",
+        "type": "Option",
+        "nodeContent": "缬沙坦氨氯地平片(Ⅰ)<br>80/5mg x 7片<br>参考均价：¥59.90<br>有效日期至：2022-12-31<br>请问您想咨询药物相关哪项？回复Bot对应数字即可哦<br>1.适应症<br>2.用法<br>3.不良反应<br>4.完整说明书",
+        "top": 281,
+        "left": 58,
+        "data": {
+          "nextNode": [
+            {
+              "nodeId": "17609dd0-d300-11ea-87de-4f72b22c127f",
+              "type": "Answer",
+              "nodeContent": "【不良反应】<br>已经在超过2600名高血压患者中进行了缬沙坦氨氯地平片的安全性评价；不良反应通常轻微且短暂，只有极少数情况下需要停药。<br>不良反应的总体发生率为非剂量依赖性，且与性别、年龄和种族均无关。",
+              "conditions": "3|不良反应",
+              "sourceAnchor": "Right"
+            },
+            {
+              "nodeId": "2be32a70-d300-11ea-87de-4f72b22c127f",
+              "type": "Answer",
+              "nodeContent": "说明书<br><img src=\"http://bys-kbs.southeastasia.cloudapp.azure.com:8081/upload/imgs/20200731153529d4280ca0-c60f-42ab-a59f-46460d0a7f8a.jpg\" alt=\"\" width=\"954\" height=\"1680\">",
+              "conditions": "4|说明书",
+              "sourceAnchor": "Right"
+            },
+            {
+              "nodeId": "0a99be10-d300-11ea-87de-4f72b22c127f",
+              "type": "Answer",
+              "nodeContent": "【用法】<br>用单药治疗不能充分控制血压的患者，可以改用本品；通常开始用药或改变剂量后2周内达到绝大部分的治疗效应。<br>为方便给药，接受氨氯地平和缬沙坦单药联合治疗的患者可以改用相同剂量的本品进行治疗",
+              "conditions": "2|用法",
+              "sourceAnchor": "Right"
+            },
+            {
+              "nodeId": "eeadc340-d2ff-11ea-87de-4f72b22c127f",
+              "type": "Answer",
+              "nodeContent": "【适应症】治疗原发性高血压。<br>本品用于单药治疗不能充分控制血压的患者。",
+              "conditions": "1|适应症",
+              "sourceAnchor": "Right"
+            }
+          ]
+        }
+      },
+      {
+        "nodeId": "312911d0-d2ff-11ea-87de-4f72b22c127f",
+        "type": "Problem",
+        "nodeContent": "缬沙坦氨氯地平片(Ⅰ)",
+        "top": 202,
+        "left": 54,
+        "data": {
+          "nextNode": [
+            {
+              "nodeId": "32bf4230-d2ff-11ea-87de-4f72b22c127f",
+              "type": "Option",
+              "nodeContent": "缬沙坦氨氯地平片(Ⅰ)<br>80/5mg x 7片<br>参考均价：¥59.90<br>有效日期至：2022-12-31<br>请问您想咨询药物相关哪项？回复Bot对应数字即可哦<br>1.适应症<br>2.用法<br>3.不良反应<br>4.完整说明书",
+              "conditions": "",
+              "sourceAnchor": "Right"
+            }
+          ]
+        }
+      },
+      {
+        "nodeId": "3066d340-d2ff-11ea-87de-4f72b22c127f",
+        "type": "Root",
+        "nodeContent": "  \n              开始\n              \n              ",
+        "top": 119,
+        "left": 59,
+        "data": {
+          "nextNode": [
+            {
+              "nodeId": "312911d0-d2ff-11ea-87de-4f72b22c127f",
+              "type": "Problem",
+              "nodeContent": "缬沙坦氨氯地平片(Ⅰ)",
+              "conditions": "",
+              "sourceAnchor": "Right"
+            }
+          ]
+        }
+      },
+      {
+        "nodeId": "0a99be10-d300-11ea-87de-4f72b22c127f",
+        "type": "Answer",
+        "nodeContent": "【用法】<br>用单药治疗不能充分控制血压的患者，可以改用本品；通常开始用药或改变剂量后2周内达到绝大部分的治疗效应。<br>为方便给药，接受氨氯地平和缬沙坦单药联合治疗的患者可以改用相同剂量的本品进行治疗",
+        "top": 379,
+        "left": 355,
+        "data": {
+          "nextNode": [
+            {
+              "nodeId": "7a8b1f20-d300-11ea-87de-4f72b22c127f",
+              "type": "Exit",
+              "nodeContent": "  \n              结束\n              \n              ",
+              "conditions": "",
+              "sourceAnchor": "Left"
+            }
+          ]
+        }
+      },
+      {
+        "nodeId": "eeadc340-d2ff-11ea-87de-4f72b22c127f",
+        "type": "Answer",
+        "nodeContent": "【适应症】治疗原发性高血压。<br>本品用于单药治疗不能充分控制血压的患者。",
+        "top": 196,
+        "left": 403,
+        "data": {
+          "nextNode": [
+            {
+              "nodeId": "7a8b1f20-d300-11ea-87de-4f72b22c127f",
+              "type": "Exit",
+              "nodeContent": "  \n              结束\n              \n              ",
+              "conditions": "",
+              "sourceAnchor": "Left"
+            }
+          ]
+        }
+      },
+      {
+        "nodeId": "7a8b1f20-d300-11ea-87de-4f72b22c127f",
+        "type": "Exit",
+        "nodeContent": "  \n              结束\n              \n              ",
+        "top": 417,
+        "left": 742,
+        "data": {
+          "nextNode": []
+        }
+      }
+    ]
+  },
+  "message": "Success",
+  "traceId": "17029af5-8672-4169-b1b2-4abf5e7361e8"
+}
