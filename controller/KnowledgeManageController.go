@@ -88,7 +88,7 @@ func (k *KnowledgeManageController) MultipleRounds(ctx *gin.Context) {
 func (k *KnowledgeManageController) AddMultipleRounds(ctx *gin.Context) {
 	addMul := new(MultipleRoundsHandle)
 	ctx.BindJSON(&addMul)
-	user := utils.GetCurrentUser(ctx.Request.Header.Get("Authorization"))
+	user := GetCurrentUser(ctx.Request.Header.Get("Authorization"))
 	if has := utils.DbEngine.Find(&kn.FaqPackage{Id: addMul.FaqPackageId}); has.RowsAffected == 0 {
 		utils.Response(ctx, 400, "知识包未找到", nil)
 		return
