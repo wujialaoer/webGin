@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 	"webGin/models"
 	kn "webGin/models/KnowledgeManage"
 	"webGin/utils"
@@ -28,7 +29,7 @@ func (k *KnowledgeManageController) Router(engine *gin.Engine) {
 	engine.GET("/Faq/Simple/:id/", k.GetFaqSimple)
 	engine.PUT("/Faq/Simple/:id/", k.UpdateFaqSimple)
 	engine.GET("/Faq/MultipleRounds/", k.MultipleRounds)
-	engine.POST("/Faq/MultipleRounds/", k.AddMultipleRounds)
+	engine.POST("/Faq/addMultipleRounds/", k.AddMultipleRounds)
 	engine.GET("/Faq/getMultipleRounds/:id", k.GetMultipleRounds)
 
 }
@@ -65,63 +66,6 @@ func (k *KnowledgeManageController) GetMultipleRounds(ctx *gin.Context) {
 	utils.Response(ctx, 200, "success", data)
 }
 
-func MultipleRoundsNodes(data []map[string]interface{}, process kn.Process) []map[string]interface{} {
-
-	allTrs := make([]kn.Transition, 0)
-	//utils.DbEngine.Distinct("from_node_id").Find(&allTrs)
-	utils.DbEngine.Where(kn.Transition{ProcessId: process.Id}).Distinct("from_node_id").Find(&allTrs)
-	for _, tr := range allTrs {
-		trs := make([]kn.Transition, 0)
-		utils.DbEngine.Where(kn.Transition{FromNodeId: tr.FromNodeId, ProcessId: process.Id}).Distinct("id", "to_node_id").Find(&trs)
-		//	根据拿到的node_id查node信息
-		node := kn.Node{NodeId: tr.FromNodeId}
-		utils.DbEngine.Find(&node)
-		nodeInfo := map[string]interface{}{
-			"nodeId":      node.NodeId,
-			"type":        node.NodeType,
-			"nodeContent": node.Description,
-			"top":         node.Top,
-			"left":        node.Left,
-		}
-		nextNodes := make([]map[string]string, 0)
-		for _, t := range trs {
-			n := kn.Node{NodeId: t.ToNodeId}
-			utils.DbEngine.Find(&n)
-			ts := kn.Transition{
-				Id: t.Id,
-			}
-			utils.DbEngine.Where(kn.Transition{ProcessId: process.Id}).Find(&ts)
-
-			nextNodes = append(nextNodes, map[string]string{
-				"nodeId":       n.NodeId,
-				"type":         n.NodeType,
-				"nodeContent":  n.Description,
-				"conditions":   ts.Conditions,
-				"sourceAnchor": ts.SourceAnchor,
-			})
-		}
-		// 拼接
-		nodeInfo["data"] = map[string]interface{}{
-			"nextNode": nextNodes,
-		}
-		//返回
-		data = append(data, nodeInfo)
-	}
-	endNode := kn.Node{}
-	utils.DbEngine.Where(kn.Node{ProcessId: process.Id, NodeType: "结束"}).Find(&endNode)
-	data = append(data, map[string]interface{}{
-		"nodeId":      endNode.NodeId,
-		"type":        endNode.NodeType,
-		"nodeContent": endNode.Description,
-		"top":         endNode.Top,
-		"left":        endNode.Left,
-		"data": map[string]interface{}{
-			"nextNode": []map[string]string{},
-		},
-	})
-	return data
-}
-
 // MultipleRounds  获取多轮初始数据
 func (k *KnowledgeManageController) MultipleRounds(ctx *gin.Context) {
 	utils.Response(ctx, 200, "success", map[string]interface{}{
@@ -144,11 +88,14 @@ func (k *KnowledgeManageController) MultipleRounds(ctx *gin.Context) {
 func (k *KnowledgeManageController) AddMultipleRounds(ctx *gin.Context) {
 	addMul := new(MultipleRoundsHandle)
 	ctx.BindJSON(&addMul)
+	user := utils.GetCurrentUser(ctx.Request.Header.Get("Authorization"))
 	if has := utils.DbEngine.Find(&kn.FaqPackage{Id: addMul.FaqPackageId}); has.RowsAffected == 0 {
 		utils.Response(ctx, 400, "知识包未找到", nil)
 		return
 	}
-	faq := kn.Faq{Id: utils.UUID4(), FaqPackageId: addMul.FaqPackageId, Problem: addMul.Problem, Answer: addMul.Answer, FaqType: 1}
+	faq := kn.Faq{Id: utils.UUID4(), FaqPackageId: addMul.FaqPackageId,
+		Problem: addMul.Problem, Answer: addMul.Answer,
+		FaqType: 1, LastModificationTime: time.Now(), LastModifierId: user["userId"]}
 	utils.DbEngine.Create(&faq)
 	process := kn.Process{FaqId: faq.Id, Id: utils.UUID4(), ProcessName: addMul.Problem}
 	for _, n := range addMul.NodeList {
@@ -447,3 +394,66 @@ type MultipleRoundsHandle struct {
 	} `json:"nodeList" form:"nodeList"`
 	FaqType int `json:"faq_type" form:"faq_type"`
 }
+
+// MultipleRoundsNodes 多轮节点数据
+func MultipleRoundsNodes(data []map[string]interface{}, process kn.Process) []map[string]interface{} {
+
+	allTrs := make([]kn.Transition, 0)
+	//utils.DbEngine.Distinct("from_node_id").Find(&allTrs)
+	utils.DbEngine.Where(kn.Transition{ProcessId: process.Id}).Distinct("from_node_id").Find(&allTrs)
+	for _, tr := range allTrs {
+		trs := make([]kn.Transition, 0)
+		utils.DbEngine.Where(kn.Transition{FromNodeId: tr.FromNodeId, ProcessId: process.Id}).Distinct("id", "to_node_id").Find(&trs)
+		//	根据拿到的node_id查node信息
+		node := kn.Node{NodeId: tr.FromNodeId}
+		utils.DbEngine.Find(&node)
+		nodeInfo := map[string]interface{}{
+			"nodeId":      node.NodeId,
+			"type":        node.NodeType,
+			"nodeContent": node.Description,
+			"top":         node.Top,
+			"left":        node.Left,
+		}
+		nextNodes := make([]map[string]string, 0)
+		for _, t := range trs {
+			n := kn.Node{NodeId: t.ToNodeId}
+			utils.DbEngine.Find(&n)
+			ts := kn.Transition{
+				Id: t.Id,
+			}
+			utils.DbEngine.Where(kn.Transition{ProcessId: process.Id}).Find(&ts)
+
+			nextNodes = append(nextNodes, map[string]string{
+				"nodeId":       n.NodeId,
+				"type":         n.NodeType,
+				"nodeContent":  n.Description,
+				"conditions":   ts.Conditions,
+				"sourceAnchor": ts.SourceAnchor,
+			})
+		}
+		// 拼接
+		nodeInfo["data"] = map[string]interface{}{
+			"nextNode": nextNodes,
+		}
+		//返回
+		data = append(data, nodeInfo)
+	}
+	endNode := kn.Node{}
+	utils.DbEngine.Where(kn.Node{ProcessId: process.Id, NodeType: "Exit"}).Find(&endNode)
+	data = append(data, map[string]interface{}{
+		"nodeId":      endNode.NodeId,
+		"type":        endNode.NodeType,
+		"nodeContent": endNode.Description,
+		"top":         endNode.Top,
+		"left":        endNode.Left,
+		"data": map[string]interface{}{
+			"nextNode": []map[string]string{},
+		},
+	})
+	return data
+}
+
+/*
+{"faqPackageId":"89e405ebad4c4746bb2510cb49f73826","problem":"提问","answer":"引导","nodeList":[{"nodeId":"cfa9bad0-4ced-11ec-a832-a598d3888fcd","type":"Root","name":"","conditions":"","sourceAnchor":"","nodeContent":" \n              开始\n              ","status":"0","top":163,"left":114,"data":{"nextNode":[{"nodeId":"d1b171b0-4ced-11ec-a832-a598d3888fcd","name":"","nodeContent":"","status":"","conditions":"开始提问","type":"Problem","sourceAnchor":"Right"}]}},{"nodeId":"d1b171b0-4ced-11ec-a832-a598d3888fcd","type":"Problem","name":"","conditions":"","sourceAnchor":"","nodeContent":"提问？","status":"0","top":177,"left":206,"data":{"nextNode":[{"nodeId":"d30a4af0-4ced-11ec-a832-a598d3888fcd","name":"","nodeContent":"","status":"","conditions":"转到引导","type":"Option","sourceAnchor":"Right"}]}},{"nodeId":"d30a4af0-4ced-11ec-a832-a598d3888fcd","type":"Option","name":"","conditions":"","sourceAnchor":"","nodeContent":"引导语","status":"0","top":296,"left":173,"data":{"nextNode":[{"nodeId":"d4115ab0-4ced-11ec-a832-a598d3888fcd","name":"","nodeContent":"","status":"","conditions":"答案","type":"Answer","sourceAnchor":"Right"}]}},{"nodeId":"d4115ab0-4ced-11ec-a832-a598d3888fcd","type":"Answer","name":"","conditions":"","sourceAnchor":"","nodeContent":"答案","status":"0","top":310,"left":521,"data":{"nextNode":[{"nodeId":"d5749430-4ced-11ec-a832-a598d3888fcd","name":"","nodeContent":"","status":"","conditions":"","type":"Exit","sourceAnchor":"Left"}]}},{"nodeId":"d5749430-4ced-11ec-a832-a598d3888fcd","type":"Exit","name":"","conditions":"","sourceAnchor":"","nodeContent":" \n              结束\n              ","status":"0","top":339,"left":828,"data":{"nextNode":[]}}],"faq_type":1}
+
+*/
