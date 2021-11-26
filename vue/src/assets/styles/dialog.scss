@@ -1,0 +1,39 @@
+.dialog-box {
+    .el-dialog__header {
+      margin: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+
+      .el-dialog__title {
+        border-left: 3px solid #4693ff;
+        padding-left: 10px;
+        height: 20px;
+        display: block;
+        line-height: 20px;
+      }
+    }
+    .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label {
+      font-weight: bold;
+    }
+    .el-form-item.is-required:not(.is-no-asterisk)
+      > .el-form-item__label:before {
+      content: "";
+    }
+
+    .el-input__inner {
+      border-color: transparent;
+      background: #f1f2f7;
+    }
+    .content textarea {
+      border-color: transparent;
+      background: #f1f2f7;
+      resize: none;
+      height: 200px;
+    }
+    .content + span {
+      position: absolute;
+      top: 160px;
+      right: 15px;
+      color: #999;
+    }
+  }

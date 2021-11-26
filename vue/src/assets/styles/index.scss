@@ -1,0 +1,160 @@
+// .mgtp20 {
+//     margin-top: 20px;
+// }
+// .index {
+//     .topbar {
+//         height: 60px;
+//         margin-bottom: 15px;
+//         background: rgba(255, 255, 255, 1);
+//         box-shadow: 0px 2px 6px 0px rgba(96, 144, 210, 0.15);
+//         .nav-l {
+//             float: left;
+//             padding-left: 30px;
+//             .el-menu-item {
+//                 color: #555c78;
+//                 float: left;
+//                 float: left;
+//                 height: 60px;
+//                 line-height: 60px;
+//                 margin: 0;
+//                 &.is-active {
+//                     border-bottom: 2px solid #409eff;
+//                     color: #4693ff;
+//                 }
+//             }
+//         }
+//         .nav-r {
+//             font-size: 14px;
+//             color: #bfcbd9;
+//             float: right;
+//             padding: 0 20px;
+//             height: 60px;
+//             line-height: 60px;
+//             margin: 0;
+//             cursor: pointer;
+//             position: relative;
+//             box-sizing: border-box;
+//             border-bottom: 5px solid transparent;
+//             transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+//             white-space: nowrap;
+//             .avatar-image {
+//                 margin-right: 20px;
+//                 img {
+//                     width: 15px;
+//                 }
+//             }
+//             .el-submenu__title:hover {
+//                 background-color: transparent;
+//             }
+//             .el-submenu__icon-arrow {
+//                 margin-top: -5px;
+//             }
+//         }
+
+//         .time {
+//             line-height: 60px;
+//             text-align: right;
+//             padding-right: 15px;
+//             font-weight: bold;
+//         }
+
+//         .input-with-select {
+//             margin-top: 10px;
+//             margin-left: 10px;
+
+//             input {
+//                 border: none;
+//                 background: rgba(241, 242, 247, 1);
+//             }
+//             .el-input-group__append {
+//                 background: #4693ff;
+//                 margin-left: 0;
+//                 border: none;
+//                 width: 80px;
+//                 text-align: center;
+//             }
+//             .el-icon-search:before {
+//                 content: "";
+//                 width: 20px;
+//                 height: 20px;
+//                 background-image: url(~@/assets/img/bot_02_search.png);
+//                 display: block;
+//                 background-size: contain;
+//                 background-repeat: no-repeat;
+//                 margin: 0 auto;
+//             }
+//         }
+//     }
+
+//     .left-menu {
+//         height: 1000px;
+//         padding: 0px;
+//         .logo {
+//             height: 67.5px;
+//             line-height: 67.5px;
+//             text-align: center;
+//             color: #fff;
+//             font-size: 16px;
+//             background: #314156;
+//         }
+//         .el-menu {
+//             border: none;
+//             border-radius: 0px;
+//         }
+//         .el-submenu__title {
+//             padding-left: 30px !important;
+//         }
+//         .el-icon-menu:before {
+//             content: "";
+//             display: block;
+//             width: 20px;
+//             height: 20px;
+//             background-image: url(~@/assets/img/bot_04_home01.png);
+//         }
+//         .el-icon-document:before {
+//             content: "";
+//             display: block;
+//             width: 20px;
+//             height: 20px;
+//             background-image: url(~@/assets/img/bot_05_list01.png);
+//         }
+//         .el-menu-item-group__title {
+//             display: none;
+//         }
+//         .el-menu-item {
+//             background: #455974 !important;
+//             padding-left: 60px !important;
+//         }
+//         .el-menu-item.is-active,
+//         .el-menu-item:hover {
+//             background: #e3efff;
+//             background: #4693ff !important;
+//             .el-icon-menu:before {
+//                 background-image: url(~@/assets/img/bot_04_home02.png);
+//             }
+//             .el-icon-document:before {
+//                 background-image: url(~@/assets/img/bot_05_list02.png);
+//             }
+//         }
+//     }
+
+//     .right-cont {
+//         h3 {
+//             font-size: 18px;
+//             margin-bottom: 15px;
+//         }
+//     }
+//     .by_container {
+//         padding: 0px 22.5px;
+//         padding-top: 7.5px;
+//     }
+
+//     .el-menu-vertical-demo {
+//         height: 100%;
+//     }
+// }
+
+// html .qa-Notify{
+//     width:160px !important;
+// }
+

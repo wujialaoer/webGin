@@ -1,0 +1,29 @@
+
+body {
+  background-color: #f1f2f7;
+  font-size: 16px;
+  line-height: 1.4285714;
+  color: #333;
+  font-family: MicrosoftYaHei,PingFangSC-Regular, Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app{
+  min-width: 1366px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline-style: none;
+}
+
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.clearfix:after{content:""; display: table; visibility:hidden; height:0;line-height: 0; clear:both;}
+.clearfix{zoom:1;}
