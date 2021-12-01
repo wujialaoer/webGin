@@ -230,51 +230,102 @@ func (k *KnowledgeManageController) GetFaq(ctx *gin.Context) {
 	pageSize, _ := strconv.Atoi(ctx.Query("pageSize"))
 	buUnitId := ctx.Query("business_unit")
 	faqPkgId := ctx.Query("faq_package")
-	faq := make([]kn.Faq, 0)
 	total := 0
-	fmt.Println(buUnitId)
-	fmt.Println(faqPkgId)
+	faq := make([]kn.Faq, 0)
+	data := make([]map[string]interface{}, 0)
 	if buUnitId != "" {
-		faqPkg := make([]kn.FaqPackage, 0)
-		utils.DbEngine.Where(kn.FaqPackage{BusinessUnitId: buUnitId}).Find(&faqPkg)
-		if len(faqPkg) > 0 {
-			for _, faqPackage := range faqPkg {
-				utils.DbEngine.Where(kn.Faq{FaqPackageId: faqPackage.Id}).Find(&faq)
+		if faqPkgId != "" {
+			utils.DbEngine.Where(kn.Faq{FaqPackageId: faqPkgId}).Find(&faq)
+			total = len(faq)
+			utils.DbEngine.Limit(pageSize).Offset((page - 1) * pageSize).Where(kn.Faq{FaqPackageId: faqPkgId}).Find(&faq)
+			fmt.Println(faq)
+			for _, f := range faq {
+				disAnswer := f.Answer
+				if len(f.Answer) > 50 {
+					disAnswer = f.Answer[:50] + "..."
+				}
+				faqPkg := kn.FaqPackage{Id: f.FaqPackageId}
+				utils.DbEngine.Find(&faqPkg)
+				user := models.UserInfo{Id: f.LastModifierId}
+				utils.DbEngine.Find(&user)
+				data = append(data, map[string]interface{}{
+					"answer":                 f.Answer,
+					"faq_package":            f.FaqPackageId,
+					"faq_type":               f.FaqType,
+					"problem":                f.Problem,
+					"dis_answer":             disAnswer,
+					"id":                     f.Id,
+					"last_modification_time": f.LastModificationTime.Format("2006-01-02T15:04:05"),
+					"last_modifier_id":       f.LastModifierId,
+					"creater":                user.UserName,
+					"name":                   faqPkg.Name,
+				})
 			}
+			utils.PageResponse(ctx, 200, "success", data, page, pageSize, total)
+			return
+
+		} else {
+			faqPkg := make([]kn.FaqPackage, 0)
+			utils.DbEngine.Where(kn.FaqPackage{BusinessUnitId: buUnitId}).Find(&faqPkg)
+			if len(faqPkg) > 0 {
+				for _, faqPackage := range faqPkg {
+					utils.DbEngine.Limit(pageSize).Offset((page - 1) * pageSize).Where(kn.Faq{FaqPackageId: faqPackage.Id}).Find(&faq)
+					for _, f := range faq {
+						disAnswer := f.Answer
+						if len(f.Answer) > 50 {
+							disAnswer = f.Answer[:50] + "..."
+						}
+						user := models.UserInfo{Id: f.LastModifierId}
+						utils.DbEngine.Find(&user)
+						data = append(data, map[string]interface{}{
+							"answer":                 f.Answer,
+							"faq_package":            f.FaqPackageId,
+							"faq_type":               f.FaqType,
+							"problem":                f.Problem,
+							"dis_answer":             disAnswer,
+							"id":                     f.Id,
+							"last_modification_time": f.LastModificationTime.Format("2006-01-02T15:04:05"),
+							"last_modifier_id":       f.LastModifierId,
+							"creater":                user.UserName,
+							"name":                   faqPackage.Name,
+						})
+					}
+				}
+			}
+			total = len(data)
+			utils.PageResponse(ctx, 200, "success", data, page, pageSize, total)
+			return
 		}
+
+	} else {
+		utils.DbEngine.Find(&faq)
 		total = len(faq)
-		fmt.Println(faq)
-		utils.PageResponse(ctx, 200, "success", faq, page, pageSize, total)
-	}
-	if faqPkgId != "" {
+		utils.DbEngine.Limit(pageSize).Offset((page - 1) * pageSize).Find(&faq)
+		for _, f := range faq {
+			disAnswer := f.Answer
+			if len(f.Answer) > 50 {
+				disAnswer = f.Answer[:50] + "..."
+			}
+			faqPkg := kn.FaqPackage{Id: f.FaqPackageId}
+			utils.DbEngine.Find(&faqPkg)
+			user := models.UserInfo{Id: f.LastModifierId}
+			utils.DbEngine.Find(&user)
+			data = append(data, map[string]interface{}{
+				"answer":                 f.Answer,
+				"faq_package":            f.FaqPackageId,
+				"faq_type":               f.FaqType,
+				"problem":                f.Problem,
+				"dis_answer":             disAnswer,
+				"id":                     f.Id,
+				"last_modification_time": f.LastModificationTime.Format("2006-01-02T15:04:05"),
+				"last_modifier_id":       f.LastModifierId,
+				"creater":                user.UserName,
+				"name":                   faqPkg.Name,
+			})
+		}
+		utils.PageResponse(ctx, 200, "success", data, page, pageSize, total)
 
 	}
-	utils.DbEngine.Find(&faq)
-	utils.DbEngine.Limit(pageSize).Offset((page - 1) * pageSize).Find(&faq)
-	data := make([]map[string]interface{}, 0)
-	for _, f := range faq {
-		disAnswer := f.Answer
-		if len(f.Answer) > 50 {
-			disAnswer = f.Answer[:50] + "..."
-		}
-		faqPkg := kn.FaqPackage{Id: f.FaqPackageId}
-		utils.DbEngine.Find(&faqPkg)
-		user := models.UserInfo{Id: f.LastModifierId}
-		utils.DbEngine.Find(&user)
-		data = append(data, map[string]interface{}{
-			"answer":                 f.Answer,
-			"faq_package":            f.FaqPackageId,
-			"faq_type":               f.FaqType,
-			"problem":                f.Problem,
-			"dis_answer":             disAnswer,
-			"id":                     f.Id,
-			"last_modification_time": f.LastModificationTime.Format("2006-01-02T15:04:05"),
-			"last_modifier_id":       f.LastModifierId,
-			"creater":                user.UserName,
-			"name":                   faqPkg.Name,
-		})
-	}
-	utils.PageResponse(ctx, 200, "success", data, page, pageSize, total)
 }
 
 // FaqPkgSelect 知识应用选择
