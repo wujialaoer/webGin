@@ -14,7 +14,7 @@ import (
 var DbEngine *gorm.DB
 
 func OrmEngine() (*gorm.DB, error) {
-	coon := config.USER + ":" + config.PASSWORD + "@tcp(" + config.DB_HOST + ":" + config.DB_PORT + ")/" + config.DBNAME + "?charset=" + config.CHARSET + "&parseTime=True&loc=Local"
+	coon := config.USER + ":" + config.PASSWORD + "@tcp(" + config.DbHost + ":" + config.DbPort + ")/" + config.DBNAME + "?charset=" + config.CHARSET + "&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(coon), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{SingularTable: true},
 		Logger:         logger.Default.LogMode(logger.Info),

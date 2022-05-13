@@ -24,7 +24,7 @@ func main() {
 	app.Use(Cors())
 	app.Use(md.JwtAuth())
 	registerRouter(app)
-	app.Run(config.APP_HOST + ":" + config.APP_PORT)
+	app.Run(config.AppHost + ":" + config.AppPort)
 }
 
 func registerRouter(engine *gin.Engine) {
